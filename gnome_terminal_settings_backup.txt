@@ -1,0 +1,10 @@
+[legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='rgb(0,0,0)'
+background-transparency-percent=11
+bold-color='rgb(27,89,242)'
+bold-color-same-as-fg=false
+foreground-color='rgb(42,177,23)'
+palette=['rgb(31,34,41)', 'rgb(212,25,25)', 'rgb(19,170,200)', 'rgb(254,164,76)', 'rgb(54,123,240)', 'rgb(151,85,179)', 'rgb(73,174,230)', 'rgb(230,230,230)', 'rgb(25,131,136)', 'rgb(236,1,1)', 'rgb(15,55,235)', 'rgb(255,138,24)', 'rgb(39,127,255)', 'rgb(150,42,195)', 'rgb(5,161,247)', 'rgb(255,255,255)']
+use-theme-colors=false
+use-theme-transparency=false
+use-transparent-background=true
