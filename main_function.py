@@ -108,36 +108,58 @@ def start(self):
     pro_node_list(self)
     pro_ns_deployment(self)
     pro_ns_pvc_pv(self)
+    start = time.time()
 
     while True:
+        count=time.time()
         file_count = len(os.popen(f"ls {path}/temp/").readlines())
-        if file_count != 15:
-            time.sleep(1)
-        elif file_count == 15:
-            time.sleep(1)
-            prox.kill()
+        if (count-start)>=10:
+            namespace_combo_clear(self)
+            node_combo_clear(self)
+            pod_combo_clear(self)
+            deployment_combo_clear(self)
+            container_combo_clear(self)
+            pvc_combo_clear(self)
+            pv_combo_clear(self)
+            service_combo_clear(self)
+            file = open(f"{path}/temp/flag", 'w')
+            file.write('0')
+            file.close()
+            self.status.setText("Failed connecting to server...!!")
             break
 
-    file = open(f"{path}/temp/namespace_svc_map.json", "r")
-    namespace_svc_map = json.load(file)
-    file.close()
-    for i in namespace_svc_map.keys():
-        self.name_space_combo.addItem(i)
+        elif file_count != 15:
+            time.sleep(1)
 
-    file = open(f"{path}/temp/node_list.json", "r")
-    node_list = json.load(file)
-    self.node_number.display(str(len(node_list.keys())))
-    ready_count = 0
-    not_ready_count = 0
-    for i in node_list.keys():
-        self.node_combo.addItem(i)
-        if node_list[i] == "Ready":
-            ready_count += 1
-        else:
-            not_ready_count += 1
-    node_status_str = f"Ready : {ready_count} | Not-ready : {not_ready_count}"
-    self.node_status_bar.setText(node_status_str)
-    # self.status.setText("Namespace maps generated!!")
+        elif file_count == 15:
+            time.sleep(1)
+
+
+            try:
+                file = open(f"{path}/temp/namespace_svc_map.json", "r")
+                namespace_svc_map = json.load(file)
+                file.close()
+                for i in namespace_svc_map.keys():
+                    self.name_space_combo.addItem(i)
+
+                file = open(f"{path}/temp/node_list.json", "r")
+                node_list = json.load(file)
+                self.node_number.display(str(len(node_list.keys())))
+                ready_count = 0
+                not_ready_count = 0
+                for i in node_list.keys():
+                    self.node_combo.addItem(i)
+                    if node_list[i] == "Ready":
+                        ready_count += 1
+                    else:
+                        not_ready_count += 1
+                node_status_str = f"Ready : {ready_count} | Not-ready : {not_ready_count}"
+                self.node_status_bar.setText(node_status_str)
+                self.status.setText("Connected to server...")
+            except Exception:
+                self.status.setText("Failed connecting to server...!!")
+            prox.kill()
+            break
 
 
 def service_pod_deployment_pvc(self):
@@ -461,26 +483,17 @@ def excute_po_con(self):
     namespace = self.name_space_combo.currentText()
     pod = self.pod_combo.currentText()
     containerx = self.container_combo.currentText()
-    USER = "{USER}"
-    PWD = "{PWD}"
+
     if containerx:
         kube_cmd = f"/home/{ssh[0]}/bin/kubectl exec -it {pod} -c {containerx} -n {namespace} bash"
         cmd = f'''sshpass -p {data[ssh[0]][1]} ssh -o StrictHostKeyChecking=no {ssh[0]}@{ssh[1]} "{kube_cmd}"'''
-        cmdx = f"dbus-launch gnome-terminal -e '{cmd}'" + "#" + containerx
-        file = open(f"{path}/temp/temp_buff_po_con_exec", "w")
-        file.write(cmdx)
-        file.close()
-        pro_cmd = f'''QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu --no-sandbox" python3 {path}/web_shell.py'''
-        Popen(pro_cmd, stdout=PIPE, stderr=None, shell=True)
+        cmdx = f"dbus-launch gnome-terminal -e '{cmd}'"
+        Popen(cmdx, stdout=PIPE, stderr=None, shell=True)
     elif pod and not containerx:
         kube_cmd = f"/home/{ssh[0]}/bin/kubectl exec -it {pod}  -n {namespace} bash"
         cmd = f'''sshpass -p {data[ssh[0]][1]} ssh -o StrictHostKeyChecking=no {ssh[0]}@{ssh[1]} "{kube_cmd}"'''
-        cmdx = f"shellinaboxd --disable-ssl --port 4222 --debug --service /:${USER}:${USER}:${PWD}:'{cmd}'" + "#" + pod
-        file = open(f"{path}/temp/temp_buff_po_con_exec", "w")
-        file.write(cmdx)
-        file.close()
-        pro_cmd = f'''QTWEBENGINE_CHROMIUM_FLAGS="--disable-gpu --no-sandbox" python3 {path}/web_shell.py'''
-        Popen(pro_cmd, stdout=PIPE, stderr=None, shell=True)
+        cmdx = f"dbus-launch gnome-terminal -e '{cmd}'"
+        Popen(cmdx, stdout=PIPE, stderr=None, shell=True)
     else:
         self.status.setText("No pod Found !!")
 

@@ -81,7 +81,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.horizontalLayoutWidget_2)
-        self.label.setStyleSheet("font: 18pt \"Ubuntu\";")
+        self.label.setStyleSheet("font: 13pt \"Ubuntu\";")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
