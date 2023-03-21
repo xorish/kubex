@@ -26,6 +26,7 @@ docker run --rm -it \
     kubex python3 main.py
 
 Note: The docker image can directly pulled from the docker hub repo:
+
 docker pull sourishx/kubex
 
 
