@@ -3,6 +3,11 @@ import sys
 import json
 import time
 
+# Author: Sourish Datta
+# Email: sourishonax@gmail.com
+# Phone: (+91) 8343003660
+
+
 path = os.path.dirname(os.path.abspath(sys.argv[0]))
 while True:
     try:

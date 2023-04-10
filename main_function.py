@@ -1,3 +1,9 @@
+
+
+# Author: Sourish Datta
+# Email: sourishonax@gmail.com
+# Phone: (+91) 8343003660
+
 def settings(self):
     import sys
     import os
